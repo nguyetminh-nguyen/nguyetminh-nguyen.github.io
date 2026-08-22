@@ -363,41 +363,53 @@
     return e.url + (e.url.indexOf("?") >= 0 ? "&" : "?") + "pageName=" + encodeURIComponent(e.pageName);
   }
 
+  /* Builds one live-report band. Used by previewBand for detail.embed, and by
+     extraBand for detail.extraEmbed - the second report shown on a project
+     page when another project's dashboard is built on the same work. */
+  function embedBand(e, pr) {
+    const ratio = e.ratio || "16 / 9";
+    // Numeric form of the same ratio, so the CSS can cap the frame by the
+    // height of the viewport and still keep its shape.
+    const parts = String(ratio).split("/");
+    const ar =
+      parts.length === 2 && parseFloat(parts[1]) ? parseFloat(parts[0]) / parseFloat(parts[1]) : 16 / 9;
+    const src = embedUrl(e);
+    return `
+      <section class="preview-band">
+        <div class="container">
+          <div class="preview-head">
+            <div>
+              <h2 class="preview-title">${esc(e.heading || "Dashboard preview")}</h2>
+              ${e.note ? `<p class="preview-note">${esc(e.note)}</p>` : ""}
+            </div>
+            <a class="btn btn-ghost btn-sm preview-open" href="${esc(src)}" target="_blank" rel="noopener">
+              Open full screen <span aria-hidden="true">&#8599;</span>
+            </a>
+          </div>
+          <div class="embed-frame" style="--embed-ratio:${esc(ratio)};--embed-ar:${ar.toFixed(4)}">
+            <iframe
+              src="${esc(src)}"
+              title="${esc(e.title || pr.title)}"
+              frameborder="0"
+              allowfullscreen="true"
+              loading="lazy"></iframe>
+          </div>
+        </div>
+      </section>`;
+  }
+
+  /* A second live report on the same project page. Fill detail.extraEmbed in
+     data.js with the same fields as detail.embed to switch it on. */
+  function extraBand(pr) {
+    const e = (pr.detail && pr.detail.extraEmbed) || {};
+    return e.url ? embedBand(e, pr) : "";
+  }
+
   function previewBand(pr) {
     const e = (pr.detail && pr.detail.embed) || {};
     const heading = e.heading || "Dashboard preview";
 
-    if (e.url) {
-      const ratio = e.ratio || "16 / 9";
-      // Numeric form of the same ratio, so the CSS can cap the frame by the
-      // height of the viewport and still keep its shape.
-      const parts = String(ratio).split("/");
-      const ar =
-        parts.length === 2 && parseFloat(parts[1]) ? parseFloat(parts[0]) / parseFloat(parts[1]) : 16 / 9;
-      const src = embedUrl(e);
-      return `
-        <section class="preview-band">
-          <div class="container">
-            <div class="preview-head">
-              <div>
-                <h2 class="preview-title">${esc(heading)}</h2>
-                ${e.note ? `<p class="preview-note">${esc(e.note)}</p>` : ""}
-              </div>
-              <a class="btn btn-ghost btn-sm preview-open" href="${esc(src)}" target="_blank" rel="noopener">
-                Open full screen <span aria-hidden="true">&#8599;</span>
-              </a>
-            </div>
-            <div class="embed-frame" style="--embed-ratio:${esc(ratio)};--embed-ar:${ar.toFixed(4)}">
-              <iframe
-                src="${esc(src)}"
-                title="${esc(e.title || pr.title)}"
-                frameborder="0"
-                allowfullscreen="true"
-                loading="lazy"></iframe>
-            </div>
-          </div>
-        </section>`;
-    }
+    if (e.url) return embedBand(e, pr);
 
     if (!pr.cover) return "";
     return `
@@ -486,6 +498,7 @@
       </section>
 
       ${previewBand(pr)}
+      ${extraBand(pr)}
 
       <section class="detail-body">
         <div class="container">

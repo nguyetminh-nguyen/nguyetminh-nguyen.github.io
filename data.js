@@ -128,7 +128,17 @@ const siteData = {
           heading: "Model preview",
           note: "The live workbook: switch sheets with the tabs at the bottom of the frame.",
           ratio: "600 / 373.5",
-          fallbackNote: "Static preview - download the workbook below to open the working model.",
+          fallbackNote: "Static preview of the P&L sheet - download the workbook below to open the working model.",
+        },
+        // A SECOND live report on this page. The FP&A dashboard is built on
+        // this same model, so it is shown here too. Same fields as embed above.
+        extraEmbed: {
+          url: "https://app.powerbi.com/view?r=eyJrIjoiMDM4ZDM1ZjItMzVmYS00NzExLWI1OTgtOGJkZTM0ZDZkZjE0IiwidCI6ImMwZTEzYmVjLTA0MjUtNGJjMy04ODY1LTEwMGI5NmVjOTI3NCJ9",
+          pageName: "",
+          title: "FP&A Dashboard",
+          heading: "The dashboard built on this model",
+          note: "The same numbers read through Power BI. Click the slicers to filter, and use the arrows at the bottom of the frame to move between the three pages.",
+          ratio: "600 / 373.5",
         },
         context: "A software company selling across four European regions wants to know how the year is actually going, and what the rest of it will look like. This Excel model answers both. Every line of the profit and loss is calculated from something you can point at in the business - how many customers, how many seats, what price, how many staff - so when a number moves, you can see exactly what moved it. Budget, latest forecast and real results all sit side by side, together with a best case and a worst case.",
         results: [
