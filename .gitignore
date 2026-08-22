@@ -1,0 +1,19 @@
+# ============================================================
+#  .gitignore  -  danh sach file KHONG dua len GitHub
+#  File nay khong anh huong gi toi website. No chi noi cho
+#  GitHub Desktop biet nhung file nao bo qua khi dong bo.
+# ============================================================
+
+# File lam viec goc - da co ban sao trong assets/files roi
+Projects/
+
+# Bai tap - ten file co ma so sinh vien, khong nen cong khai
+Assignment*.docx
+
+# Rac cua Windows / macOS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# File tam cua Excel / Word khi dang mo
+~$*

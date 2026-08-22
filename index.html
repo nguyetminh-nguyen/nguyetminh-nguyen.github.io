@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio</title>
+  <meta name="description" content="Portfolio - finance and data analysis projects, research, and writing." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header" id="siteHeader">
+    <div class="container header-inner">
+      <a class="brand" href="#top">
+        <span class="brand-mark" id="brandMark">NM</span>
+        <span class="brand-text">
+          <span class="brand-name" id="brandName">Name</span>
+          <span class="brand-role" id="brandRole">Role</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav" aria-label="Main"></nav>
+
+      <div class="header-actions">
+        <a class="btn btn-primary btn-sm" id="headerCv" href="#" download>Download CV</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN (home view) ===== -->
+  <main id="main">
+    <div id="homeView">
+
+      <!-- HERO -->
+      <section class="hero" id="top">
+        <div class="container hero-inner">
+          <div class="hero-copy">
+            <p class="eyebrow" id="heroRole"></p>
+            <h1 class="hero-title" id="heroName"></h1>
+            <p class="hero-headline" id="heroHeadline"></p>
+            <p class="hero-intro" id="heroIntro"></p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#projects">View projects</a>
+              <a class="btn btn-ghost" id="heroCv" href="#" download>Download CV</a>
+            </div>
+            <ul class="hero-meta" id="heroMeta"></ul>
+          </div>
+          <div class="hero-visual">
+            <div class="portrait" id="portrait"></div>
+            <div class="portrait-badge" id="availability"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTIONS RENDERED BY script.js -->
+      <div id="sections"></div>
+
+    </div>
+
+    <!-- PROJECT DETAIL VIEW -->
+    <div id="projectView" hidden></div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-note" id="footerNote"></p>
+      <ul class="footer-links" id="footerLinks"></ul>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
