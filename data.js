@@ -269,6 +269,7 @@ const siteData = {
       category: "Machine Learning",
       period: "2024",
       featured: true,
+      hideFromAll: true,                 // an khoi tab All, chi hien khi bam nut loc Machine Learning
       summary: "Classified 10,000 movie reviews by topic and sentiment, then tested whether either predicts opening-week revenue. Sentiment does not. Volume does - roughly $44,000 of box office per additional review.",
       tags: ["Naive Bayes", "LDA", "Word2Vec", "OLS", "Text mining"],
       cover: "",
@@ -291,6 +292,7 @@ const siteData = {
       category: "Machine Learning",
       period: "2024",
       featured: true,
+      hideFromAll: true,                 // an khoi tab All, chi hien khi bam nut loc Machine Learning
       summary: "Ran Thompson Sampling over 130,000 rounds of e-commerce impression data to learn which items and slots earn clicks, then benchmarked it against UCB and epsilon-greedy under varying batch sizes, priors, and user segments.",
       tags: ["Thompson Sampling", "Multi-armed bandits", "UCB", "A/B testing", "R"],
       cover: "",

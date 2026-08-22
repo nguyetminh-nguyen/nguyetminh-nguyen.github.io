@@ -151,7 +151,9 @@
     const cta = isLive(pr) ? "View live dashboard" : "View project";
 
     return `
-      <a class="card reveal" href="#/project/${esc(pr.id)}" data-category="${esc(pr.category || "")}">
+      <a class="card reveal" href="#/project/${esc(pr.id)}" data-category="${esc(pr.category || "")}"${
+        pr.hideFromAll ? ` data-hide-from-all="1" style="display:none"` : ""
+      }>
         <div class="card-cover${pr.cover ? "" : " is-blank"}"${cover}>
           ${flags ? `<div class="cover-flags">${flags}</div>` : ""}
         </div>
@@ -180,8 +182,16 @@
     if (cats[0] !== "All") cats.unshift("All");
     if (cfg.hideEmptyFilters) cats = cats.filter((c) => c === "All" || used.includes(c));
 
+    // A project with hideFromAll: true in data.js stays out of the All tab and
+    // out of its count; it appears only under its own category button.
     const counts = {};
-    cats.forEach((c) => (counts[c] = c === "All" ? list.length : list.filter((p) => p.category === c).length));
+    cats.forEach(
+      (c) =>
+        (counts[c] =
+          c === "All"
+            ? list.filter((p) => !p.hideFromAll).length
+            : list.filter((p) => p.category === c).length)
+    );
 
     const filters =
       cats.length > 2
@@ -338,7 +348,8 @@
         const f = btn.dataset.filter;
         let visible = 0;
         wrap.querySelectorAll(".card").forEach((card) => {
-          const show = f === "All" || card.dataset.category === f;
+          const show =
+            f === "All" ? card.dataset.hideFromAll !== "1" : card.dataset.category === f;
           card.style.display = show ? "" : "none";
           if (show) visible++;
         });
@@ -393,6 +404,8 @@
               Open full screen <span aria-hidden="true">&#8599;</span>
             </a>
           </div>
+        </div>
+        <div class="container container-wide">
           <div class="embed-frame" style="--embed-ratio:${esc(ratio)};--embed-ar:${ar.toFixed(4)}">
             <iframe
               src="${esc(src)}"
@@ -430,6 +443,8 @@
               )}</p>
             </div>
           </div>
+        </div>
+        <div class="container container-wide">
           <div class="preview-static"><img src="${esc(pr.cover)}" alt="${esc(pr.title)}" loading="lazy" /></div>
         </div>
       </section>`;
