@@ -60,17 +60,24 @@
     if (p.phone) meta.push(`<li><span class="dot"></span>${esc(p.phone)}</li>`);
     $("#heroMeta").innerHTML = meta.join("");
 
+    // The portrait tile and the availability badge were removed from the hero
+    // in index.html. These guards let the code run with or without them, so
+    // putting the markup back is enough to switch them on again.
     const portrait = $("#portrait");
-    if (p.photo) {
-      portrait.style.backgroundImage = `url("${p.photo}")`;
-      portrait.textContent = "";
-    } else {
-      portrait.textContent = p.initials || (p.name || "").slice(0, 2).toUpperCase();
+    if (portrait) {
+      if (p.photo) {
+        portrait.style.backgroundImage = `url("${p.photo}")`;
+        portrait.textContent = "";
+      } else {
+        portrait.textContent = p.initials || (p.name || "").slice(0, 2).toUpperCase();
+      }
     }
 
     const badge = $("#availability");
-    if (p.availability) badge.textContent = p.availability;
-    else badge.style.display = "none";
+    if (badge) {
+      if (p.availability) badge.textContent = p.availability;
+      else badge.style.display = "none";
+    }
 
     // CV buttons
     [["#headerCv", "Download CV"], ["#heroCv", "Download CV"]].forEach(([sel]) => {

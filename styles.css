@@ -1,5 +1,5 @@
 /* =============================================================
-   STYLES.CSS - visual design
+   STYLES.CSS — visual design
    You normally do not need to edit this file.
    To change the accent colour, edit --accent below.
    ============================================================= */
@@ -119,7 +119,10 @@ button{font-family:inherit;}
     linear-gradient(180deg,#FBFCFE 0%,#FFFFFF 100%);
   border-bottom:1px solid var(--line);
 }
-.hero-inner{display:grid;grid-template-columns:1.35fr .65fr;gap:64px;align-items:center;}
+/* One column: the portrait tile that used to sit on the right was removed
+   from index.html. Add .hero-visual back and this becomes two columns again. */
+.hero-inner{display:grid;grid-template-columns:1fr;gap:64px;align-items:center;}
+.hero-inner:has(.hero-visual){grid-template-columns:1.35fr .65fr;}
 .eyebrow{
   font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
   color:var(--accent);margin:0 0 14px;
@@ -460,7 +463,7 @@ button{font-family:inherit;}
   .nav-toggle{display:flex;}
   .header-actions .btn{display:none;}
   .project-grid{grid-template-columns:1fr;}
-  /* A 16:9 frame gets too short to use on a phone - give it a floor, and drop
+  /* A 16:9 frame gets too short to use on a phone — give it a floor, and drop
      the viewport-height cap so the frame keeps the full column width. */
   .embed-frame{min-height:460px;max-width:none;}
   .preview-head{align-items:flex-start;}
