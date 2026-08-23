@@ -21,7 +21,7 @@ const siteData = {
     email: "nguyennguyetminh18012004@gmail.com",   // used by the Contact section only
     phone: "",                           // leave "" to hide
     photo: "",                           // e.g. "assets/photo.jpg" - leave "" to show initials instead
-    cvFile: "assets/CV.pdf",             // drop your CV in the assets/ folder, then put its filename here
+    cvFile: "assets/Minh-Nguyen-CV.pdf", // temporary CV download file
     availability: "Open to analyst roles & internships - 2026",
   },
 
