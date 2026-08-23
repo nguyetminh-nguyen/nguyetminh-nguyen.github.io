@@ -14,7 +14,7 @@ const siteData = {
   profile: {
     name: "Nguyen Nguyet Minh",
     initials: "NM",                      // shown in the logo, top left
-    role: "Financial & Data Analyst",    // small line above your name
+    role: "Master's Student in Finance at Erasmus University Rotterdam", // small line above your name
     headline: "",                        // leave "" to hide the line under your name
     intro: "I work across financial analysis and commercial decision-making - understanding performance, identifying the drivers behind revenue, margins and costs, and translating quantitative insights into clear recommendations for the business.",
     location: "",                        // leave "" to hide
