@@ -425,6 +425,136 @@
     return e.url ? embedBand(e, pr) : "";
   }
 
+  /* ---------- interactive financial table (detail.analysis) ---------- */
+  function analysisBand(pr) {
+    const a = (pr.detail && pr.detail.analysis) || null;
+    if (!a) return "";
+    return `
+      <section class="analysis-band">
+        <div class="container">
+          <div class="analysis-head">
+            <div>
+              <h2 class="analysis-title">${esc(a.heading || "Explore the model")}</h2>
+              ${a.note ? `<p class="analysis-note">${esc(a.note)}</p>` : ""}
+            </div>
+          </div>
+          <div class="analysis-panel" data-analysis-table>
+            <div class="analysis-tabs" role="tablist" aria-label="Financial output">
+              <button class="analysis-tab active" type="button" role="tab" aria-selected="true" data-analysis-mode="pnl">P&amp;L</button>
+              <button class="analysis-tab" type="button" role="tab" aria-selected="false" data-analysis-mode="balance">Balance sheet</button>
+              <button class="analysis-tab" type="button" role="tab" aria-selected="false" data-analysis-mode="adjustments">Close adjustments</button>
+            </div>
+            <div class="analysis-controls">
+              <label class="analysis-control" data-analysis-period-wrap>
+                <span>Period</span>
+                <select data-analysis-period aria-label="Select period"></select>
+              </label>
+              <label class="analysis-control analysis-search">
+                <span>Search</span>
+                <input type="search" data-analysis-search placeholder="Find a line item" aria-label="Search line items" />
+              </label>
+            </div>
+            <p class="analysis-caption" data-analysis-caption></p>
+            <div class="analysis-table-wrap">
+              <table class="analysis-table">
+                <thead><tr>
+                  <th scope="col"><button type="button" data-analysis-sort="line">Line item</button></th>
+                  <th scope="col" class="numeric"><button type="button" data-analysis-sort="amount">Amount</button></th>
+                </tr></thead>
+                <tbody data-analysis-body></tbody>
+              </table>
+            </div>
+            <p class="analysis-empty" data-analysis-empty hidden>No matching line items.</p>
+          </div>
+        </div>
+      </section>`;
+  }
+
+  function initAnalysisTable(root, pr) {
+    const a = pr.detail && pr.detail.analysis;
+    const panel = root.querySelector("[data-analysis-table]");
+    if (!a || !panel) return;
+
+    const views = {
+      pnl: { label: "P&L", rows: a.pnlRows || [], periods: a.periods || [] },
+      balance: { label: "Balance sheet", rows: a.balanceSheetRows || [], periods: ["31 Dec 2025"] },
+      adjustments: { label: "Close adjustments", rows: a.adjustmentRows || [], periods: ["FY2025"] },
+    };
+    const periodSelect = panel.querySelector("[data-analysis-period]");
+    const periodWrap = panel.querySelector("[data-analysis-period-wrap]");
+    const search = panel.querySelector("[data-analysis-search]");
+    const caption = panel.querySelector("[data-analysis-caption]");
+    const body = panel.querySelector("[data-analysis-body]");
+    const empty = panel.querySelector("[data-analysis-empty]");
+    let mode = "pnl";
+    let sort = "line";
+    let direction = 1;
+
+    const formatEUR = (value) => {
+      const n = Number(value) || 0;
+      return new Intl.NumberFormat("en-IE", {
+        style: "currency", currency: "EUR", maximumFractionDigits: 0,
+      }).format(n);
+    };
+
+    const render = () => {
+      const view = views[mode];
+      const hasPeriods = mode === "pnl";
+      periodWrap.hidden = !hasPeriods;
+      if (hasPeriods && !periodSelect.options.length) {
+        periodSelect.innerHTML = view.periods.map((p) => `<option value="${esc(p)}">${esc(p)}</option>`).join("");
+        periodSelect.value = view.periods[view.periods.length - 1];
+      }
+      const period = hasPeriods ? periodSelect.value : view.periods[0];
+      const periodIndex = hasPeriods ? view.periods.indexOf(period) : -1;
+      const query = String(search.value || "").trim().toLowerCase();
+      const rows = view.rows
+        .map((row) => ({ ...row, value: hasPeriods ? row.amounts[periodIndex] : row.amount }))
+        .filter((row) => !query || row.line.toLowerCase().includes(query))
+        .sort((left, right) => {
+          if (left.total) return 1;
+          if (right.total) return -1;
+          return sort === "amount"
+            ? direction * (left.value - right.value)
+            : direction * left.line.localeCompare(right.line);
+        });
+
+      caption.textContent = `${view.label} · ${period} · ${rows.length} line item${rows.length === 1 ? "" : "s"}`;
+      body.innerHTML = rows.map((row) => `
+        <tr class="${row.total ? "analysis-total" : ""}">
+          <th scope="row">${esc(row.line)}</th>
+          <td class="numeric ${row.value < 0 ? "negative" : ""}">${formatEUR(row.value)}</td>
+        </tr>`).join("");
+      empty.hidden = rows.length > 0;
+    };
+
+    panel.querySelectorAll("[data-analysis-mode]").forEach((button) => {
+      button.addEventListener("click", () => {
+        mode = button.dataset.analysisMode;
+        sort = "line";
+        direction = 1;
+        periodSelect.innerHTML = "";
+        panel.querySelectorAll("[data-analysis-mode]").forEach((b) => {
+          const active = b === button;
+          b.classList.toggle("active", active);
+          b.setAttribute("aria-selected", active ? "true" : "false");
+        });
+        render();
+      });
+    });
+    periodSelect.addEventListener("change", render);
+    search.addEventListener("input", render);
+    panel.querySelectorAll("[data-analysis-sort]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const next = button.dataset.analysisSort;
+        direction = sort === next ? direction * -1 : 1;
+        sort = next;
+        render();
+      });
+    });
+    render();
+  }
+
   function previewBand(pr) {
     const e = (pr.detail && pr.detail.embed) || {};
     const heading = e.heading || "Dashboard preview";
@@ -522,6 +652,8 @@
       ${previewBand(pr)}
       ${extraBand(pr)}
 
+      ${analysisBand(pr)}
+
       <section class="detail-body">
         <div class="container">
           <div class="detail-layout${side.length ? "" : " no-side"}">
@@ -534,6 +666,7 @@
           </nav>
         </div>
       </section>`;
+    initAnalysisTable(view, pr);
   }
 
   /* ---------- routing ---------- */

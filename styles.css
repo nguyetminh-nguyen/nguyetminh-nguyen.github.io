@@ -383,6 +383,34 @@ button{font-family:inherit;}
   border-radius:var(--radius);box-shadow:var(--shadow);background:#fff;
 }
 
+/* ---------- interactive financial table ---------- */
+.analysis-band{padding:48px 0;background:#fff;border-bottom:1px solid var(--line);}
+.analysis-head{margin-bottom:20px;}
+.analysis-title{font-size:1.35rem;color:var(--navy-900);margin:0;letter-spacing:-.015em;}
+.analysis-note{font-size:14px;color:var(--muted);margin:8px 0 0;max-width:76ch;}
+.analysis-panel{border:1px solid var(--line-strong);border-radius:var(--radius-lg);background:var(--surface);padding:22px;box-shadow:var(--shadow-sm);}
+.analysis-tabs{display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:16px;}
+.analysis-tab{border:1px solid var(--line-strong);border-radius:99px;padding:8px 14px;background:#fff;color:var(--body);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;}
+.analysis-tab:hover{border-color:var(--navy-900);color:var(--navy-900);}
+.analysis-tab.active{background:var(--navy-900);border-color:var(--navy-900);color:#fff;}
+.analysis-controls{display:flex;gap:14px;flex-wrap:wrap;padding:18px 0 14px;}
+.analysis-control{display:grid;gap:6px;font-size:12px;font-weight:650;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+.analysis-control select,.analysis-control input{min-height:40px;border:1px solid var(--line-strong);border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-size:14px;letter-spacing:normal;text-transform:none;padding:8px 10px;}
+.analysis-search{min-width:min(320px,100%);flex:1 1 260px;}
+.analysis-caption{font-size:13px;color:var(--muted);margin:0 0 12px;}
+.analysis-table-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px;background:#fff;}
+.analysis-table{border-collapse:collapse;width:100%;min-width:540px;font-size:14px;}
+.analysis-table th,.analysis-table td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;}
+.analysis-table thead th{background:#F6F8FB;color:var(--muted);font-size:11.5px;font-weight:650;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}
+.analysis-table thead button{border:0;background:transparent;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;padding:0;cursor:pointer;}
+.analysis-table thead button:hover{color:var(--navy-900);}
+.analysis-table tbody th{font-weight:550;color:var(--ink);}
+.analysis-table tr:last-child th,.analysis-table tr:last-child td{border-bottom:0;}
+.analysis-table .numeric{text-align:right;font-variant-numeric:tabular-nums;}
+.analysis-table .negative{color:#9B2C2C;}
+.analysis-table .analysis-total th,.analysis-table .analysis-total td{font-weight:700;color:var(--navy-900);background:var(--accent-soft);border-top:1px solid var(--line-strong);}
+.analysis-empty{margin:16px 0 0;color:var(--muted);font-size:14px;}
+
 .detail-body{padding:60px 0 84px;}
 .detail-layout{display:grid;grid-template-columns:1fr 268px;gap:64px;align-items:start;}
 .detail-layout.no-side{grid-template-columns:minmax(0,78ch);}
@@ -469,6 +497,7 @@ button{font-family:inherit;}
      the viewport-height cap so the frame keeps the full column width. */
   .embed-frame{min-height:460px;max-width:none;}
   .preview-head{align-items:flex-start;}
+  .analysis-panel{padding:16px;}
   .contact-card{grid-template-columns:1fr;padding:40px 32px;}
   .contact-actions{flex-direction:row;flex-wrap:wrap;}
 }
