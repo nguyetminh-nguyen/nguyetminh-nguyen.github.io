@@ -1,13 +1,18 @@
+param(
+    [string[]]$Names
+)
+
 $ErrorActionPreference = 'Stop'
 
 $root = 'C:\Users\nguye\OneDrive\Tài liệu\CV & Motivation Letters\New CV'
 $out = 'C:\website\cv_render_qc_word'
-$names = @(
+$defaultNames = @(
     'Minh Nguyen CV - GCS.docx',
     'Minh Nguyen CV - UL Solutions.docx',
     'Minh Nguyen CV - Rosewood Amsterdam.docx',
     'Minh Nguyen CV - McCain Foods.docx'
 )
+$names = if ($Names) { $Names } else { $defaultNames }
 
 New-Item -ItemType Directory -Force -Path $out | Out-Null
 $word = New-Object -ComObject Word.Application
